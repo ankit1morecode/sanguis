@@ -20,7 +20,7 @@ router.post("/start", (req, res) => {
 });
 
 router.post("/stop", (req, res) => {
-  publishControl({ action: "STOP" });
+  publishControl("iv/cmd/stop", "1");
   res.json({ status: "IV Stopped" });
 });
 

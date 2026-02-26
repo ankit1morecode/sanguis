@@ -52,7 +52,9 @@ function initFlowChart() {
       datasets: [{
         data: [],
         borderColor: "#00e0c6",
-        borderWidth: 2,
+        backgroundColor: "rgba(0,224,198,0.15)",
+        tension: 0.4,
+        fill: true,
         tension: 0,
         fill: false,
         pointRadius: 0
@@ -164,21 +166,21 @@ function updateDripAnimation(rate) {
 }
 
 function updateFlowChart(flowRate) {
-  if (!flowChart) return;
+  if (!flowChart || typeof flowRate !== "number") return;
 
-  const value = generateECG(flowRate);
+  const now = new Date();
+  const timeLabel = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 
-  flowChart.data.labels.push("");
-  flowChart.data.datasets[0].data.push(value);
+  flowChart.data.labels.push(timeLabel);
+  flowChart.data.datasets[0].data.push(flowRate);
 
-  if (flowChart.data.labels.length > 60) {
+  if (flowChart.data.labels.length > 20) {
     flowChart.data.labels.shift();
     flowChart.data.datasets[0].data.shift();
   }
 
   flowChart.update();
 }
-
 function updateMeter(score) {
   if (!riskMeter) return;
   riskMeter.data.datasets[0].data = [score, 100 - score];
@@ -250,7 +252,7 @@ if (el.startBtn) {
   });
 }
 
-if (el.stopBtn){
+if (el.stopBtn) {
   el.stopBtn.addEventListener("click", () => {
     fetch("/api/control/stop", { method: "POST" });
   });
