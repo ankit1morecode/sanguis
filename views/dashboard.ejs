@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>SanguinArgus.IV</title>
 
@@ -23,13 +22,13 @@
     <div class="container-fluid vh-100 d-flex flex-column">
 
         <!-- HEADER -->
-        <div class="row header-bar px-4 py-3 align-items-center">
+        <div class="row header-bar px-4 py-3 align-items-center shadow-header">
             <div class="col-md-6">
                 <h3 class="title mb-0">🩸 SanguinArgus.IV</h3>
-                <small class="sub-title">Reliability System</small>
+                <small class="sub-title">Smart IV Reliability Monitoring System</small>
             </div>
             <div class="col-md-6 text-end">
-                <span id="riskLevel" class="status-badge">NORMAL</span>
+                <span id="riskLevel" class="status-badge pulse-badge">NORMAL</span>
             </div>
         </div>
 
@@ -86,23 +85,23 @@
 
             <!-- CENTER -->
             <div class="col-md-4 d-flex flex-column align-items-center justify-content-center gap-4">
-                <div class="center-glass">
-                    <canvas id="riskMeter"></canvas>
-
+                <!-- <div class="center-glass">
                     <div class="meter-overlay">
                         <div class="center-risk" id="riskScore">0%</div>
                         <div class="risk-sub">Risk Score</div>
                     </div>
-                </div>
+                    <canvas id="riskMeter"></canvas>
+                </div> -->
 
-                <div class="card-panel mt-4">
-                    <div class="card-label">IV Control Panel</div>
+                <div class="card-panel mt-4 control-panel">
+                    <div class="card-label mb-3">IV Control Panel</div>
 
-                    <div style="display:flex; gap:10px;">
-                        <input type="number" id="dripInput" placeholder="Drops / min" />
-                        <div style="display:flex; gap:10px; margin-bottom:15px;">
-                            <button id="startBtn" class="btn-green">Start</button>
-                            <button id="stopBtn" class="btn-red">Stop</button>
+                    <div class="d-flex flex-column gap-3">
+                        <input type="number" id="dripInput" placeholder="Enter Drops / min" />
+
+                        <div class="d-flex gap-3">
+                            <button id="startBtn" class="btn-green w-50">Start</button>
+                            <button id="stopBtn" class="btn-red w-50">Stop</button>
                         </div>
                     </div>
                 </div>
@@ -127,5 +126,4 @@
 
     <script src="/js/socketClient.js"></script>
 </body>
-
 </html>
