@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SanguinArgus.IV</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="main-bg">
+
+    <!-- Background Glow -->
+    <div class="bg-glow bg-glow-left"></div>
+    <div class="bg-glow bg-glow-right"></div>
+
+    <div class="container-fluid vh-100 d-flex flex-column">
+
+        <!-- HEADER -->
+        <div class="row header-bar px-4 py-3 align-items-center">
+            <div class="col-md-6">
+                <h3 class="title mb-0">🩸 SanguinArgus.IV</h3>
+                <small class="sub-title">Reliability System</small>
+            </div>
+            <div class="col-md-6 text-end">
+                <span id="riskLevel" class="status-badge">NORMAL</span>
+            </div>
+        </div>
+
+        <!-- SENSOR STRIP -->
+        <div class="row p-3">
+
+            <!-- FSR -->
+            <div class="col-md-4">
+                <div class="card-panel text-center">
+                    <div class="card-label">FSR Pressure</div>
+                    <div class="big-value" id="fsrValue">-- N</div>
+                    <small class="sensor-desc">Tissue Swelling Monitor</small>
+
+                    <div class="swelling-bar">
+                        <div class="swelling-fill" id="swellingFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DRIP -->
+            <div class="col-md-4">
+                <div class="card-panel text-center drip-card">
+                    <div class="card-label">Drip Rate</div>
+                    <div class="big-value" id="dripValue">-- drops/min</div>
+                    <small class="sensor-desc">IV Flow Monitoring</small>
+
+                    <div class="drip-container">
+                        <div class="drop"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEMP -->
+            <div class="col-md-4">
+                <div class="card-panel text-center">
+                    <div class="card-label">Temperature</div>
+                    <div class="big-value" id="temperatureValue">-- °C</div>
+                    <small class="sensor-desc">IV Site Temperature</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="row flex-grow-1 px-4 pb-4">
+
+            <!-- LEFT -->
+            <div class="col-md-4 d-flex flex-column gap-4">
+                <div class="card-panel">
+                    <div class="card-label">Flow Rate</div>
+                    <div class="big-value" id="flowValue">0 ml/min</div>
+                </div>
+
+                <div class="card-panel flex-grow-1">
+                    <div class="card-label mb-3">Flow Trend</div>
+                    <canvas id="flowChart"></canvas>
+                </div>
+            </div>
+
+            <!-- CENTER -->
+            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center gap-4">
+                <div class="center-glass">
+                    <canvas id="riskMeter"></canvas>
+
+                    <div class="meter-overlay">
+                        <div class="center-risk" id="riskScore">0%</div>
+                        <div class="risk-sub">Risk Score</div>
+                    </div>
+                </div>
+
+                <div class="card-panel mt-4">
+                    <div class="card-label">IV Control Panel</div>
+
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="dripInput" placeholder="Drops / min" />
+                        <div style="display:flex; gap:10px; margin-bottom:15px;">
+                            <button id="startBtn" class="btn-green">Start</button>
+                            <button id="stopBtn" class="btn-red">Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="col-md-4 d-flex flex-column gap-4">
+                <div class="card-panel">
+                    <div class="card-label">Confidence</div>
+                    <div class="big-value" id="confidence">0%</div>
+                </div>
+
+                <div class="card-panel">
+                    <div class="card-label">Device Status</div>
+                    <div class="medium-value" id="deviceStatus">--</div>
+                </div>
+
+                <div class="card-panel">
+                    <div class="card-label">Fault</div>
+                    <div class="medium-value" id="deviceFault">--</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/socketClient.js"></script>
+</body>
+
+</html>
