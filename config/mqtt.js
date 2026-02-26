@@ -12,62 +12,56 @@ let latestData = {
 
 const setupMQTT = (io) => {
 
-  client = mqtt.connect(process.env.MQTT_BROKER_URL, {
+  client = mqtt.connect(process.env.MQTT_BROKER_URL,{
     reconnectPeriod: 3000
   });
 
   client.on("connect", () => {
-  console.log("✅ MQTT Connected");
+    console.log("✅ MQTT Connected");
 
-  const topics = [
-    "iv/temperature",
-    "iv/flow",
-    "iv/fsr",
-    "iv/status",
-    "iv/fault"
-  ];
+    const topics = [
+      "iv/temperature",
+      "iv/flow",
+      "iv/fsr",
+      "iv/status",
+      "iv/fault"
+    ];
 
-  client.subscribe(topics, (err, granted) => {
-    if (err) {
-      console.error("❌ Subscription Error:", err);
-    } else {
-      granted.forEach(sub => {
-        console.log(`📡 Subscribed to ${sub.topic} (QoS ${sub.qos})`);
-      });
-    }
+    client.subscribe(topics);
   });
-});
 
   client.on("message", (topic, message) => {
     const value = message.toString();
-    console.log(`📥 MQTT Message → ${topic}: ${value}`);
-    switch (topic) {
 
+    switch (topic) {
       case "iv/temperature":
         latestData.temperature = Number(value);
         break;
-
       case "iv/flow":
         latestData.dripRate = Number(value);
         break;
-
       case "iv/fsr":
         latestData.fsr = Number(value);
         break;
-
       case "iv/status":
         latestData.status = value;
         break;
-
       case "iv/fault":
         latestData.fault = value;
         break;
     }
 
-    // Emit to dashboard when core data available
-      io.emit("updateDashboard", { ...latestData });
+    io.emit("updateDashboard", { ...latestData });
   });
-
 };
 
-module.exports = { setupMQTT };
+const publishControl = (topic, payload) => {
+  if (!client || !client.connected) {
+    console.log("⚠ MQTT not connected");
+    return;
+  }
+
+  client.publish(topic, payload.toString());
+};
+
+module.exports = { setupMQTT, publishControl };

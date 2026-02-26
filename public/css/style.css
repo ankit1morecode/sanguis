@@ -14,15 +14,22 @@ body.main-bg {
   transition: background 0.3s ease;
 }
 
-/* DANGER MODE */
-@keyframes dangerBlink {
-  0% { background-color: rgba(239,68,68,0.15); }
-  50% { background-color: rgba(239,68,68,0.05); }
-  100% { background-color: rgba(239,68,68,0.15); }
+/* ================= EMERGENCY BLINK ================= */
+
+@keyframes emergencyBlink {
+  0%   { background-color: rgba(239, 68, 68, 0.15); }
+  50%  { background-color: rgba(239, 68, 68, 0.35); }
+  100% { background-color: rgba(239, 68, 68, 0.15); }
 }
 
 .danger-mode {
-  animation: dangerBlink 1s infinite;
+  animation: emergencyBlink 0.8s infinite;
+}
+
+/* Optional red glow */
+.danger-mode .card-panel,
+.danger-mode .center-glass {
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
 }
 
 /* BACKGROUND GLOW */

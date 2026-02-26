@@ -131,13 +131,15 @@ function applyRiskStyling(level, score) {
 
   document.body.classList.remove("danger-mode");
 
-  if (score < 30) {
-    el.riskScore.style.color = "#00e0c6";
-  } else if (score < 65) {
-    el.riskScore.style.color = "#facc15";
-  } else {
-    el.riskScore.style.color = "#ef4444";
+  if (level === "HIGH RISK") {
     document.body.classList.add("danger-mode");
+    el.riskScore.style.color = "#ef4444";
+  }
+  else if (level === "WARNING") {
+    el.riskScore.style.color = "#facc15";
+  }
+  else {
+    el.riskScore.style.color = "#00e0c6";
   }
 
   el.riskBadge.innerText = level;
@@ -231,7 +233,20 @@ socket.on("updateDashboard", (data) => {
 
 if (el.startBtn) {
   el.startBtn.addEventListener("click", () => {
-    fetch("/api/control/start", { method: "POST" });
+
+    const value = Number(el.dripInput.value);
+
+    if (!value || value <= 0) {
+      alert("Enter valid drip rate first");
+      return;
+    }
+
+    fetch("/api/control/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dropsPerMinute: value })
+    });
+
   });
 }
 
